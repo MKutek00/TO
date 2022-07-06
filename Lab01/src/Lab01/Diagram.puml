@@ -1,0 +1,102 @@
+@startuml
+
+CurrencyInterface <|-- Currency
+CurrencyRateTable *-- Currency
+Main --> MyFrame
+MyFrame --> ComboItem
+ParseXML --> ReadXML
+MyFrame --> ParseXML
+ParseXML --> CurrencyRateTable
+MyFrame --> CurrencyRateTable
+
+skinparam classAttributeIconSize 0
+
+interface CurrencyInterface{
+    +getName(): String
+    +getConversionFactor(): double
+    +getCurrencyCode(): String
+    +getCurrencyRate(): double
+}
+
+class Currency{
+    -name: String
+    -conversionFactor: double
+    -currencyCode: String
+    -currencyRate: double
+
+    +Currency(name: String, conversionFactor: double, currencyCode: String, currencyRate: double)
+    +getName(): String
+    +getConversionFactor(): double
+    +getCurrencyCode(): String
+    +getCurrencyRate(): double
+    +toString(): String
+}
+
+class ComboItem{
+    -key: String
+    -value: String
+
+    +ComboItem(key: String, value: String)
+    +toString(): String
+    +getKey(): String
+    +getValue(): String
+}
+
+
+class CurrencyRateTable<<Singleton>>{
+    -{static}instance: CurrencyRateTable
+    -dateOfPublication: String
+    -tableNumber: String
+    -currencyList: List<Currency>
+
+    -CurrencyRateTable()
+    +add(): void
+    +{static}getInstance(): CurrencyRateTable
+    +getDateOfPublication: String
+    +setDateOfPublication(dateOfPublication: String): void
+    +getTableNumber(): String
+    +setTableNumber(tableNumber: String): void
+    +getCurrencyList(): List<Currency>
+}
+
+class ReadXML{
+    +{static}readXML(urlString: String): void
+}
+
+class ParseXML{
+    -{static}currencyRateTable: CurrencyRateTable
+
+    +{static}parseXML(buffer: StringBuffer): void
+}
+
+class MyFrame{
+    -{static}urlString: String
+    -{static}currencyRateTable: CurrencyRateTable
+    -currencyRate1: private
+    -currencyRate2: private
+    -conversionFactor1: private
+    -conversionFactor2: private
+    -currency1: String
+    -currency2: String
+    -jPanel1: JPanel
+    -jPanel2: JPanel
+    -jPanel1: JLabel
+    -jPanel2: JLabel
+    -jPanel3: JLabel
+    -jPanel4: JLabel
+    -jButton1: JButton
+    -jButton2: JButton
+    -jTextField1: JTextField
+    -jComboBox1: JComboBox
+    -jComboBox2: JComboBox
+
+    +MyFrame()
+    +initComponents(): void
+    +exit(): void
+}
+
+class Main{
+   +{static}main(): void
+}
+
+@enduml
